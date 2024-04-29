@@ -91,3 +91,13 @@ def determine_icon(any_rainy):
     else:
         return "../images/sunny.png"
 
+
+def format_email_content(data):
+    with open("../src/templates/email_template.html", "r") as file:
+        html_template = file.read()
+
+    message_html = html_template.replace("{day}", data['day'])
+    message_html = message_html.replace("{icon}", determine_icon(data['any_rainy']))
+    message_html = message_html.replace("{hour_percentage}", data['hour_and_percentage'])
+
+    return message_html
