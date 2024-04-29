@@ -1,6 +1,11 @@
 import requests
 import pandas as pd
+import os
 from datetime import datetime, timedelta
+from selenium import webdriver
+from selenium.webdriver.common.by import By
+from selenium.webdriver.support.ui import WebDriverWait
+from selenium.webdriver.support import expected_conditions as ec
 
 
 def get_api_data(url):
@@ -106,3 +111,21 @@ def format_email_content(data):
 def save_html(message_html):
     with open("../src/templates/weather_forecast.html", 'w', encoding='utf-8') as file:
         file.write(message_html)
+
+
+def print_email():
+    options = webdriver.ChromeOptions()
+    options.add_argument("--headless")
+    driver = webdriver.Chrome(options=options)
+
+    driver.set_window_size(800, 650)
+
+    html_file_path = os.path.abspath("D:/python-projects/bike_weather/src/templates/weather_forecast.html")
+    driver.get("file://" + html_file_path)
+
+    WebDriverWait(driver, 10).until(ec.visibility_of_element_located((By.XPATH, '/html/body/div[1]')))
+    screenshot_path = "D:/python-projects/bike_weather/src/screenshots/forecast_screenshot.png"
+    driver.save_screenshot(screenshot_path)
+    driver.quit()
+
+    return screenshot_path
