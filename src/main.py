@@ -42,3 +42,21 @@ def get_alert_dataframe(training_days_dataframe, alert_day):
         alert_day_dataframe = alert_day_dataframe.sort_values(by='hourly_precipitation_probability',
                                                               ascending=False).head(3)
         return alert_day_dataframe
+
+
+def format_email_data(alert_day_dataframe):
+    email_data = {
+        'day': [],
+        'hour': [],
+        'hourly_precipitation_probability': []
+    }
+
+    for index, row in alert_day_dataframe.iterrows():
+        day = row['date'][:10]
+        hour = row['date'][11:]
+        hourly_precipitation_probability = row['hourly_precipitation_probability']
+        email_data['day'].append(day)
+        email_data['hour'].append(hour)
+        email_data['hourly_precipitation_probability'].append(hourly_precipitation_probability)
+
+    return email_data
