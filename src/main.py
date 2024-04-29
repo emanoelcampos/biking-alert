@@ -1,6 +1,6 @@
 import requests
 import pandas as pd
-from _datetime import datetime
+from datetime import datetime, timedelta
 
 
 def get_api_data(url):
@@ -33,3 +33,12 @@ def determine_alert_day():
     today = datetime.now()
     if today.weekday() in [0, 2, 4]:
         return today
+
+
+def get_alert_dataframe(training_days_dataframe, alert_day):
+    if alert_day:
+        training_day = (alert_day + timedelta(days=1)).strftime('%Y-%m-%d')
+        alert_day_dataframe = training_days_dataframe[training_days_dataframe['date'].str.contains(training_day)]
+        alert_day_dataframe = alert_day_dataframe.sort_values(by='hourly_precipitation_probability',
+                                                              ascending=False).head(3)
+        return alert_day_dataframe
