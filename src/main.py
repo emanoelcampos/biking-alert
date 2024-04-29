@@ -83,3 +83,11 @@ def process_email_data(email_data):
         'hour_and_percentage': hour_and_precipitation,
         'any_rainy': any_rainy
     }
+
+
+def determine_icon(any_rainy):
+    if any_rainy:
+        return "../images/rainy.png"
+    else:
+        return "../images/sunny.png"
+
