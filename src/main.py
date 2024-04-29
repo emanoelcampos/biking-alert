@@ -6,6 +6,12 @@ from selenium import webdriver
 from selenium.webdriver.common.by import By
 from selenium.webdriver.support.ui import WebDriverWait
 from selenium.webdriver.support import expected_conditions as ec
+from dotenv import load_dotenv
+import smtplib
+from email.mime.image import MIMEImage
+from email.mime.multipart import MIMEMultipart
+from email.mime.text import MIMEText
+
 
 
 def get_api_data(url):
@@ -129,3 +135,42 @@ def print_email():
     driver.quit()
 
     return screenshot_path
+
+
+def send_email(screenshot_path):
+    load_dotenv()
+    today = datetime.today().strftime('%d/%m')
+
+    smtp_server = 'smtp.gmail.com'
+    smtp_port = 587
+    smtp_username = os.environ['FROM']
+    smtp_password = os.environ['PASSWORD']
+
+    with open(screenshot_path, 'rb') as img_file:
+        img_data = img_file.read()
+
+    html_content = '''
+    <html lang="pt-BR">
+    <body>
+        <img src="cid:image1">
+    </body>
+    </html>
+    '''
+
+    message = MIMEMultipart()
+    message['From'] = smtp_username
+    message['To'] = os.environ['TO']
+    message['Subject'] = f'Weather Forecast - {today}'
+    message.attach(MIMEText(html_content, 'html'))
+    img = MIMEImage(img_data)
+    img.add_header('Content-ID', '<image1>')
+
+    img.add_header('Content-Disposition', 'attachment', filename='weather forecast')
+
+    message.attach(img)
+
+    with smtplib.SMTP(smtp_server, smtp_port) as server:
+        server.starttls()
+        server.login(smtp_username, smtp_password)
+        server.sendmail(smtp_username, message['To'], message.as_string())
+        server.quit()
