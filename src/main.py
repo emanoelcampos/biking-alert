@@ -101,3 +101,8 @@ def format_email_content(data):
     message_html = message_html.replace("{hour_percentage}", data['hour_and_percentage'])
 
     return message_html
+
+
+def save_html(message_html):
+    with open("../src/templates/weather_forecast.html", 'w', encoding='utf-8') as file:
+        file.write(message_html)
