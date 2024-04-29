@@ -60,3 +60,26 @@ def format_email_data(alert_day_dataframe):
         email_data['hourly_precipitation_probability'].append(hourly_precipitation_probability)
 
     return email_data
+
+
+def process_email_data(email_data):
+    day = datetime.strptime(email_data['day'][1], "%Y-%m-%d").strftime("%d/%m")
+
+    hour_precipitation_list = []
+    any_rainy = False
+
+    for i in range(len(email_data['hour'])):
+        hour = email_data['hour'][i]
+        precipitation_probability = email_data['hourly_precipitation_probability'][i]
+        if precipitation_probability > 0:
+            any_rainy = True
+        hour_and_precipitation = f'<div class="info"><div class="time">{hour}</div><div class="percentage">{precipitation_probability}%</div></div>'
+        hour_precipitation_list.append(hour_and_precipitation)
+
+    hour_and_precipitation = "".join(hour_precipitation_list)
+
+    return {
+        'day': day,
+        'hour_and_percentage': hour_and_precipitation,
+        'any_rainy': any_rainy
+    }
