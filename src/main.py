@@ -27,3 +27,9 @@ def select_training_days_data(weather_dataframe):
         weather_dataframe['day_of_week'].isin(['Tuesday', 'Thursday', 'Saturday'])]
 
     return training_days_dataframe
+
+
+def determine_alert_day():
+    today = datetime.now()
+    if today.weekday() in [0, 2, 4]:
+        return today
