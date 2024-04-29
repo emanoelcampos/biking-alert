@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=JetBrains+Mono:ital,wght@0,100..800;1,100..800&display=swap');
+
+        body {
+            padding: 0;
+            height: 80vh;
+            margin-left: 200px;
+            display: flex;
+            align-items: center;
+            font-family: "JetBrains Mono ExtraBold", sans-serif;
+            color: #FFFFFF;
+        }
+
+        img {
+            width: 35%;
+            height: auto;
+            padding-top: 50px;
+            padding-bottom: 20px;
+        }
+
+        .container {
+            text-align: center;
+        }
+
+        .square {
+            position: relative;
+            width: 500px;
+            height: 500px;
+            background-color: #424242;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            border-radius: 10%;
+            box-sizing: border-box;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.9);
+        }
+
+        .info {
+            display: flex;
+            justify-content: space-around;
+            width: 100%;
+            padding-top: 1%;
+        }
+
+        .time,
+        .percentage {
+            font-size: 42px;
+        }
+
+        .top-left,
+        .top-right {
+            position: absolute;
+            font-size: 18px;
+        }
+
+        .top-left {
+            top: 6%;
+            left: 6%;
+        }
+
+        .top-right {
+            top: 6%;
+            right: 6%;
+        }
+    </style>
+</head>
+<body>
+<div class="container">
+    <div class="square">
+        <div class="top-left">Blumenau</div>
+        <div class="top-right">{day}</div>
+        <img src="{icon}" alt="icon" width="150" height="150">
+        {hour_percentage}
+    </div>
+</div>
+</body>
+</html>
