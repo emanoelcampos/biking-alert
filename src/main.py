@@ -174,3 +174,29 @@ def send_email(screenshot_path):
         server.login(smtp_username, smtp_password)
         server.sendmail(smtp_username, message['To'], message.as_string())
         server.quit()
+
+
+def main():
+    load_dotenv()
+    latitude = os.environ['LATITUDE']
+    longitude = os.environ['LONGITUDE']
+    base_url = 'https://api.open-meteo.com/v1/forecast'
+    url = f'{base_url}?latitude={latitude}&longitude={longitude}&hourly=temperature_2m,precipitation_probability&timezone=America%2FSao_Paulo&forecast_days=3'
+
+    response_json = get_api_data(url)
+    weather_dataframe = select_weather_data(response_json)
+    training_days_dataframe = select_training_days_data(weather_dataframe)
+
+    alert_day = determine_alert_day()
+    alert_day_dataframe = get_alert_dataframe(training_days_dataframe, alert_day)
+    email_data = format_email_data(alert_day_dataframe)
+
+    processed_data = process_email_data(email_data)
+    message_html = format_email_content(processed_data)
+    save_html(message_html)
+    screenshot_path = print_email()
+    send_email(screenshot_path)
+
+
+if __name__ == "__main__":
+    main()
